@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{# Title of the Page #}
+{% block title %} WELCOME USER {% endblock %}
+
+{# should contain the brand button which redirects to user home #}
+{% block user_home %}
+<a href="{{ url_for('app.index') }}" class="navbar-brand">
+    <img src="{{ url_for('static', filename='images/Brand-image.svg') }}" height="40" width="40">
+    GroceryStore
+</a>
+{% endblock %}
+
+{# should contain the navigation options on a page on the navigation bar #}
+{% block navbar_options %}
+{% endblock %}
+
+{# search bar for the page can be hidden or shown #}
+{% block nav_search %}
+<form class="d-flex" role="search">
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+{% endblock %}
+
+
+{# authentication options like signin, signout, etc #}
+{% block nav_auth_options %}
+<div class="d-flex align-items-center px-3">
+    <a href="{{ url_for('auth.signin') }}" type="button" class="btn btn-dark px-3 me-2 text-decoration-none">
+        Sign in
+    </a>
+    <a href="{{ url_for('auth.signup') }}" type="button" class="btn btn-success me-3 text-decoration-none">
+        Sign up
+    </a>
+</div>
+{% endblock %}
+
+
+{# MAIN content for the website #}
+{% block content %}
+<div class="jumbotron m-5 text-center">
+    <h1 class="display-4">Hello, world!</h1>
+    <p class="lead">
+        This is the Home page for Grocery Store
+    </p>
+    
+    <hr class="my-4">
+    
+    <p>
+        Login to browse our products
+    </p>
+    <p class="lead">
+        <a class="btn btn-success btn-lg" href="{{ url_for('auth.signin') }}" role="button">Sign In</a>
+    </p>
+</div>
+{% endblock %}
+
+{% block footer_admin %}
+<div class="row p-3">
+    <div class="col-8 text-start">
+        <a class="btn btn-outline-success" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            CATEGORIES
+        </a>
+    
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">CATEGORIES</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+    
+                <ul class="list-group">
+                    {% for item in data["category"] %}  
+                    <li class="list-group-item d-flex justify-content-between align-items-center btn btn-outline-success m-1">
+                        {{ item.name }}
+                        <span class="badge bg-success rounded-pill">14</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+    
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4 text-end">
+        <a href="{{url_for('admin.admin_signin')}}" class="text-decoration-none btn btn-outline-success">
+            Admin
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+
+
