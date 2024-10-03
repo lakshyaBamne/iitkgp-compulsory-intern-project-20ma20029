@@ -1,0 +1,317 @@
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'Admin'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Admin`;
+		
+CREATE TABLE `Admin` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `full_name` VARCHAR(100) NULL DEFAULT NULL,
+  `user_name` VARCHAR(50) NULL DEFAULT NULL,
+  `email` VARCHAR(100) NULL DEFAULT NULL,
+  `contact` VARCHAR(15) NULL DEFAULT NULL,
+  `password_hash` VARCHAR(500) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'User'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `User`;
+		
+CREATE TABLE `User` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `full_name` VARCHAR(100) NULL DEFAULT NULL,
+  `user_name` VARCHAR(100) NULL DEFAULT NULL,
+  `email` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  `contact` VARCHAR(15) NOT NULL DEFAULT 'NULL',
+  `password_hash` VARCHAR(500) NULL DEFAULT NULL,
+  `date_joined` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `user_name`),
+KEY (`id`, `user_name`)
+);
+
+-- ---
+-- Table 'City'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `City`;
+		
+CREATE TABLE `City` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'State'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `State`;
+		
+CREATE TABLE `State` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Country'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Country`;
+		
+CREATE TABLE `Country` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Location'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Location`;
+		
+CREATE TABLE `Location` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `city_id` INTEGER NULL DEFAULT NULL,
+  `state_id` INTEGER NULL DEFAULT NULL,
+  `country_id` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'PrimaryAddress'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `PrimaryAddress`;
+		
+CREATE TABLE `PrimaryAddress` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `user_id` INTEGER NULL DEFAULT NULL,
+  `address_id` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Address'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Address`;
+		
+CREATE TABLE `Address` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `user_id` INTEGER NULL DEFAULT NULL,
+  `first_name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
+  `last_name` VARCHAR(50) NULL DEFAULT NULL,
+  `house_number` VARCHAR(50) NULL DEFAULT NULL,
+  `line_1` VARCHAR(200) NOT NULL DEFAULT 'NULL',
+  `line_2` VARCHAR(200) NULL DEFAULT NULL,
+  `pincode` VARCHAR(6) NULL DEFAULT NULL,
+  `location_id` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Category'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Category`;
+		
+CREATE TABLE `Category` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  `description` VARCHAR(500) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Product'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Product`;
+		
+CREATE TABLE `Product` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  `description` VARCHAR(500) NULL DEFAULT NULL,
+  `category_id` INTEGER NULL DEFAULT NULL,
+  `quantity` INTEGER NULL DEFAULT NULL,
+  `unit` INTEGER NULL DEFAULT NULL,
+  `price_per_quantity` INTEGER NULL DEFAULT NULL,
+  `id_Seller` INTEGER NULL DEFAULT NULL,
+  `date_added` DATETIME NULL DEFAULT NULL,
+  `expiration_date` DATETIME NULL DEFAULT NULL,
+  `rating` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'MeasurementUnit'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `MeasurementUnit`;
+		
+CREATE TABLE `MeasurementUnit` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  `shorthand` VARCHAR(10) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Seller'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Seller`;
+		
+CREATE TABLE `Seller` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  `seller_contact` VARCHAR(20) NOT NULL DEFAULT 'NULL',
+  `seller_email` VARCHAR(100) NOT NULL DEFAULT 'NULL',
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Rating'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Rating`;
+		
+CREATE TABLE `Rating` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `product_id` INTEGER NULL DEFAULT NULL,
+  `user_id` INTEGER NULL DEFAULT NULL,
+  `stars` INTEGER NULL DEFAULT NULL,
+  `date_added` DATETIME NULL DEFAULT NULL,
+  `description` VARCHAR(500) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Cart'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Cart`;
+		
+CREATE TABLE `Cart` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `username` VARCHAR(100) NULL DEFAULT NULL,
+  `product` INTEGER NULL DEFAULT NULL,
+  `quantity` INTEGER NOT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'SaveForLater'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `SaveForLater`;
+		
+CREATE TABLE `SaveForLater` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `username` VARCHAR(100) NULL DEFAULT NULL,
+  `product` INTEGER NOT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+ALTER TABLE `Location` ADD FOREIGN KEY (city_id) REFERENCES `City` (`id`);
+ALTER TABLE `Location` ADD FOREIGN KEY (state_id) REFERENCES `State` (`id`);
+ALTER TABLE `Location` ADD FOREIGN KEY (country_id) REFERENCES `Country` (`id`);
+ALTER TABLE `PrimaryAddress` ADD FOREIGN KEY (user_id) REFERENCES `User` (`id`);
+ALTER TABLE `PrimaryAddress` ADD FOREIGN KEY (address_id) REFERENCES `Address` (`id`);
+ALTER TABLE `Address` ADD FOREIGN KEY (user_id) REFERENCES `User` (`id`);
+ALTER TABLE `Address` ADD FOREIGN KEY (location_id) REFERENCES `Location` (`id`);
+ALTER TABLE `Product` ADD FOREIGN KEY (category_id) REFERENCES `Category` (`id`);
+ALTER TABLE `Product` ADD FOREIGN KEY (unit) REFERENCES `MeasurementUnit` (`id`);
+ALTER TABLE `Product` ADD FOREIGN KEY (id_Seller) REFERENCES `Seller` (`id`);
+ALTER TABLE `Rating` ADD FOREIGN KEY (product_id) REFERENCES `Product` (`id`);
+ALTER TABLE `Rating` ADD FOREIGN KEY (user_id) REFERENCES `User` (`id`);
+ALTER TABLE `Cart` ADD FOREIGN KEY (username) REFERENCES `User` (`user_name`);
+ALTER TABLE `Cart` ADD FOREIGN KEY (product) REFERENCES `Product` (`id`);
+ALTER TABLE `SaveForLater` ADD FOREIGN KEY (username) REFERENCES `User` (`user_name`);
+ALTER TABLE `SaveForLater` ADD FOREIGN KEY (product) REFERENCES `Product` (`id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `Admin` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `User` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `City` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `State` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Country` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Location` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `PrimaryAddress` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Address` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Category` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Product` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `MeasurementUnit` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Seller` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Rating` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Cart` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `SaveForLater` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `Admin` (`id`,`full_name`,`user_name`,`email`,`contact`,`password_hash`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `User` (`id`,`full_name`,`user_name`,`email`,`contact`,`password_hash`,`date_joined`) VALUES
+-- ('','','','','','','');
+-- INSERT INTO `City` (`id`,`name`) VALUES
+-- ('','');
+-- INSERT INTO `State` (`id`,`name`) VALUES
+-- ('','');
+-- INSERT INTO `Country` (`id`,`name`) VALUES
+-- ('','');
+-- INSERT INTO `Location` (`id`,`city_id`,`state_id`,`country_id`) VALUES
+-- ('','','','');
+-- INSERT INTO `PrimaryAddress` (`id`,`user_id`,`address_id`) VALUES
+-- ('','','');
+-- INSERT INTO `Address` (`id`,`user_id`,`first_name`,`last_name`,`house_number`,`line_1`,`line_2`,`pincode`,`location_id`) VALUES
+-- ('','','','','','','','','');
+-- INSERT INTO `Category` (`id`,`name`,`description`) VALUES
+-- ('','','');
+-- INSERT INTO `Product` (`id`,`name`,`description`,`category_id`,`quantity`,`unit`,`price_per_quantity`,`id_Seller`,`date_added`,`expiration_date`,`rating`) VALUES
+-- ('','','','','','','','','','','');
+-- INSERT INTO `MeasurementUnit` (`id`,`name`,`shorthand`) VALUES
+-- ('','','');
+-- INSERT INTO `Seller` (`id`,`name`,`seller_contact`,`seller_email`) VALUES
+-- ('','','','');
+-- INSERT INTO `Rating` (`id`,`product_id`,`user_id`,`stars`,`date_added`,`description`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `Cart` (`id`,`username`,`product`,`quantity`) VALUES
+-- ('','','','');
+-- INSERT INTO `SaveForLater` (`id`,`username`,`product`) VALUES
+-- ('','','');
